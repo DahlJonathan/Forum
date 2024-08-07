@@ -1,7 +1,7 @@
-//handlers.go
 package handle
 
 import (
+	"context"
 	"html/template"
 	"lions/database"
 	"lions/post"
@@ -13,25 +13,35 @@ import (
 )
 
 var (
-	// Replace with your own secret key
 	key   = []byte("super-secret-key")
 	store = sessions.NewCookieStore(key)
 )
 
+// Middleware to check session and set user data
+func SessionMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		session, _ := store.Get(r, "session")
+
+		username, usernameOk := session.Values["username"].(string)
+		authenticated, authOk := session.Values["authenticated"].(bool)
+
+		if !usernameOk {
+			username = ""
+		}
+		if !authOk {
+			authenticated = false
+		}
+
+		ctx := context.WithValue(r.Context(), "Username", username)
+		ctx = context.WithValue(ctx, "Authenticated", authenticated)
+
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
 func MainPageHandler(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "session")
-
-	// Retrieve username and authentication status with proper type assertions
-	username, usernameOk := session.Values["username"].(string)
-	authenticated, authOk := session.Values["authenticated"].(bool)
-
-	// Default values if type assertions fail
-	if !usernameOk {
-		username = ""
-	}
-	if !authOk {
-		authenticated = false
-	}
+	username, _ := r.Context().Value("Username").(string)
+	authenticated, _ := r.Context().Value("Authenticated").(bool)
 
 	data := map[string]interface{}{
 		"Username":      username,
@@ -74,7 +84,6 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Debug registration information
 		log.Printf("User registered: username=%s, email=%s", name, email)
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
@@ -92,46 +101,31 @@ func PostsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "session")
-
-	// Check if user is already authenticated
-	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
-
-	if r.Method == "GET" {
-		tmpl, err := template.ParseFiles("static/html/login.html")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		tmpl.Execute(w, nil)
-		return
-	}
-
-	if r.Method == "POST" {
-		email := r.FormValue("email")
+	if r.Method == http.MethodPost {
+		username := r.FormValue("username")
 		password := r.FormValue("password")
 
-		var storedPassword, username string
-		err := database.DB.QueryRow(`SELECT Password, Username FROM User WHERE Email = ?`, email).Scan(&storedPassword, &username)
+		var dbPassword string
+		err := database.DB.QueryRow(`SELECT Password FROM User WHERE Username = ?`, username).Scan(&dbPassword)
 		if err != nil {
-			http.Error(w, "Invalid email or password", http.StatusUnauthorized)
+			http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 			return
 		}
 
-		err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(password))
-		if err != nil {
-			http.Error(w, "Invalid email or password", http.StatusUnauthorized)
+		if password == dbPassword {
+			session, _ := store.Get(r, "session")
+			session.Values["authenticated"] = true
+			session.Values["username"] = username
+			session.Save(r, w)
+
+			http.Redirect(w, r, "/mainpage", http.StatusSeeOther)
 			return
+		} else {
+			http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 		}
-
-		session.Values["authenticated"] = true
-		session.Values["username"] = username
-		session.Save(r, w)
-
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+	} else {
+		tmpl, _ := template.ParseFiles("static/html/login.html")
+		tmpl.Execute(w, nil)
 	}
 }
 

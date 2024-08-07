@@ -1,4 +1,4 @@
-//database.go
+// database.go
 package database
 
 import (
@@ -83,4 +83,3 @@ func Init() {
 	}
 	log.Println("Database schema and indexes created or already exist.")
 }
-

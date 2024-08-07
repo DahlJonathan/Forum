@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Post.Title}}</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>{{.Post.Title}}</h1>
+    </header>
+    <main>
+        <article>
+            <p>{{.Post.Content}}</p>
+            <p>Posted by {{.Post.Username}} in {{.Post.Category}}</p>
+        </article>
+
+        <section class="replies">
+            <h2>Replies</h2>
+            {{range .Replies}}
+            <div class="reply">
+                <p>{{.Content}}</p>
+            </div>
+            {{else}}
+            <p>No replies yet. Be the first to reply!</p>
+            {{end}}
+        </section>
+
+        <section class="reply-form">
+            {{if .Authenticated}}
+            <form action="/post/reply" method="post">
+                <input type="hidden" name="post_id" value="{{.Post.ID}}">
+                <label for="content">Your Reply:</label>
+                <textarea id="content" name="content" required></textarea>
+                <button type="submit">Reply</button>
+            </form>
+            {{else}}
+            <p>You need to <a href="/login">login</a> to reply.</p>
+            {{end}}
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Literary Lions Forum</p>
+    </footer>
+</body>
+</html>

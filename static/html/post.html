@@ -1,4 +1,3 @@
-<!-- post.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,12 +7,11 @@
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-    <!-- header ----------------------- -->
     <header>
         <h1>Literary Lions Forum</h1>
         <nav>
             <a href="/">Home</a>
-            <a href="/post">Posts</a>
+            <a href="/posts">Forum</a>
             {{if .Authenticated}}
                 <a href="/logout">Logout</a>
                 <p>Hello, {{.Username}}!</p>
@@ -24,30 +22,41 @@
         </nav>
     </header>
 
-    <!-- main ----------------------- -->
     <main>
-
-        <section class="categories">
-            <h2>Categories</h2>
-            <ul>
-                <li><a href="/general">General Discussion</a></li>
-                <li><a href="/genres">Genres</a></li>
-                <li><a href="/book_specific">Book-Specific</a></li>
-            </ul>
+        <section class="new-post">
+            <h2>Create a New Post</h2>
+            {{if .Authenticated}}
+            <form action="/post/create" method="post">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required>
+                <label for="content">Content:</label>
+                <textarea id="content" name="content" required></textarea>
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category" required>
+                <button type="submit">Post</button>
+            </form>
+            {{else}}
+            <p>You need to <a href="/login">login</a> to create a post.</p>
+            {{end}}
         </section>
-        
+
         <section class="posts">
             <h2>Recent Posts</h2>
-            <!-- Posts content will be dynamically inserted here -->
+            {{range .Posts}}
+            <article>
+                <h3><a href="/post/view?id={{.ID}}">{{.Title}}</a></h3>
+                <p>{{.Content}}</p>
+                <p>Category: {{.Category}}</p>
+                <p>Posted by {{.Username}}</p>
+            </article>
+            {{else}}
+            <p>No posts yet. Be the first to post!</p>
+            {{end}}
         </section>
-
     </main>
 
-        <!-- footer ----------------------- -->
-        <footer>
-            <p>&copy; 2024 Literary Lions Forum</p>
-        </footer>
-
+    <footer>
+        <p>&copy; 2024 Literary Lions Forum</p>
+    </footer>
 </body>
 </html>
-

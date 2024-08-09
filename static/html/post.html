@@ -14,7 +14,8 @@
             <a href="/posts">Forum</a>
             {{if .Authenticated}}
                 <a href="/logout">Logout</a>
-                <p>Hello, {{.Username}}!</p>
+                <a href="/profile">My Page</a>
+                <p>Welcome, {{.Username}}!</p>
             {{else}}
                 <a href="/login">Login</a>
                 <a href="/register">Register</a>

@@ -99,11 +99,11 @@ CMD ["./main"]
 
 Build the Docker Image:
 ```
-sudo docker build -t lions .
+sudo docker build -t literary-lions .
 ```
 Run the Docker Container:
 ```
-sudo docker run -p 8080:8080 lions
+sudo docker run -p 8080:8080 literary-lions
 ```
 
 

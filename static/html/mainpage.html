@@ -16,6 +16,7 @@
             <a href="/post">Forum</a>
             {{if .Authenticated}}
                 <a href="/logout">Logout</a>
+                <a href="/profile">My Page</a>
                 <p>Welcome, {{.Username}}!</p>
             {{else}}
                 <a href="/login">Login</a>

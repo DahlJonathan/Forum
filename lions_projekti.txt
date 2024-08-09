@@ -6,4 +6,7 @@ Laura:
 
 Jonathan:
 
-SQlite login/logout
+SQlite login/logout/register
+bcrypt
+post/comment
+

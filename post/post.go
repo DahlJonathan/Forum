@@ -3,6 +3,7 @@ package post
 import (
 	"database/sql"
 	"lions/database"
+	"log"
 	"net/http"
 	"text/template"
 
@@ -99,9 +100,17 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 		var userID int
 		err := database.DB.QueryRow(`SELECT UserID FROM User WHERE Username = ?`, username).Scan(&userID)
 		if err != nil {
-			http.Error(w, "Could not find user", http.StatusInternalServerError)
+			if err == sql.ErrNoRows {
+				log.Printf("No user found with username: %s", username)
+				http.Error(w, "Could not find user", http.StatusInternalServerError)
+			} else {
+				log.Printf("Database error retrieving user ID: %v", err)
+				http.Error(w, "Database error", http.StatusInternalServerError)
+			}
 			return
 		}
+
+		log.Printf("Creating post for user ID: %d", userID)
 
 		// Retrieve or create category ID
 		var categoryID int
@@ -125,6 +134,8 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 			categoryID = int(categoryID64)
 		}
 
+		log.Printf("Using category ID: %d for category: %s", categoryID, category)
+
 		// Insert post
 		_, err = database.DB.Exec(`INSERT INTO Post (Title, Content, UserID, CategoryID) VALUES (?, ?, ?, ?)`,
 			title, content, userID, categoryID)
@@ -133,6 +144,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		log.Printf("Post created successfully for user ID: %d", userID)
 		http.Redirect(w, r, "/posts", http.StatusSeeOther)
 	} else {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)

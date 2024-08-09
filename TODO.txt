@@ -1,9 +1,16 @@
 *************************************************************************
 TEHTY
 *************************************************************************
+Rekisteröidyt käyttäjät:
+Users can register successfully.
+The forum requires email, username and password for registration.
+Registered users can log in and access features.
+muokkaa tervetuola sähköposti viesti
 
-
-
+Tietoturva:
+The forum detects duplicate email or username during registration. OK!
+The forum displays a warning message for invalid login attempts. OK!
+The forum detects incorrect email or password during login. OK!
 
 
 
@@ -14,18 +21,21 @@ TEHTY
 *************************************************************************
 TEKEMÄSSÄ???
 *************************************************************************
+Rekisteröidyt käyttäjät:
+Registered users can view their created posts and liked posts.
+Only registered users can create posts and comments.
+Only registered users can like or dislike posts and comments
+
 
 ***********************************
 Tietoturva:
 ***********************************
-    The forum detects duplicate email or username during registration.
-    The forum displays a warning message for invalid login attempts.
-    The forum detects incorrect email or password during login.
-    Multiple browser sessions function correctly.
-    Sessions are implemented for user persistence.
-    The registration process is user-friendly and secure. XXXEXTRAXXXX
-    UUIDs are used to manage sessions. XXXEXTRAXXXX
-    Passwords are secured and encrypted using bcrypt or other strong algorithms. XXXEXTRAXXXX
+
+Multiple browser sessions function correctly.
+Sessions are implemented for user persistence.
+The registration process is user-friendly and secure. XXXEXTRAXXXX  OK! (mitä tarkoitaa secure?)
+UUIDs are used to manage sessions. XXXEXTRAXXXX
+Passwords are secured and encrypted using bcrypt or other strong algorithms. XXXEXTRAXXXX OK!
 
 
 
@@ -40,17 +50,18 @@ Tietoturva:
 *************************************************************************
 TEKEMÄTTÄ
 *************************************************************************
+pari test sähköpostiviestiä
 
 
 ***********************************
 Rekisteröidyt käyttäjät:
 ***********************************
-    Users can register successfully.
-    Registered users can view their created posts and liked posts.
-    The forum requires email, username and password for registration.
-    Registered users can log in and access features.
-    Only registered users can create posts and comments.
-    Only registered users can like or dislike posts and comments
+
+Registered users can view their created posts and liked posts.
+
+
+Only registered users can create posts and comments.
+Only registered users can like or dislike posts and comments
 
 
 ***********************************

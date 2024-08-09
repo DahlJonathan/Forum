@@ -15,8 +15,8 @@
             <a href="/">Home</a>
             <a href="/post">Forum</a>
             {{if .Authenticated}}
-                <a href="/logout">Logout</a>
-                <p>Hello, {{.Username}}!</p>
+                <a href="/logout">Logout</a>              <a href="/profile">My Page</a>
+               
             {{else}}
                 <a href="/login">Login</a>
                 <a href="/register">Register</a>
@@ -38,6 +38,26 @@
             <button type="submit">Login</button>
         </form>
     </div>
+
+
+    <h2>Forgot your password?</h2>
+    <form action="/password-reset-request" method="post">
+        <label for="email">Enter your email address:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="submit">Send Reset Link</button>
+    </form>
+
+
+
+    <h2>Enter a new password</h2>
+    <form method="post" action="/reset-password">
+        <input type="hidden" name="token" value="{{.Token}}">
+        <label for="password">New Password:</label>
+        <input type="password" name="password" id="password" required>
+        <button type="submit">Reset Password</button>
+    </form>
+
+
     {{else}}
     <p>You are already logged in. <a href="/">Go to Home</a></p>
     {{end}}

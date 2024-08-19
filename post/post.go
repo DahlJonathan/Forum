@@ -30,7 +30,7 @@ type Post struct {
 	Views         int            // Number of views of the post
 	LastReplyDate sql.NullString // Date of the last reply
 	LastReplyUser sql.NullString // Username of the user who made the last reply
-	CreatedAt     sql.NullString // Timestamp when the post was created
+	CreatedAt     sql.NullTime   // Timestamp when the post was created
 }
 
 // Pagination represents pagination data for listing posts.

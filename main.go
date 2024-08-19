@@ -34,6 +34,7 @@ func main() {
 	http.Handle("/post/view", session.SessionMiddleware(http.HandlerFunc(post.ViewPost)))
 	http.Handle("/post", session.SessionMiddleware(http.HandlerFunc(post.ListPosts)))
 	http.Handle("/post/reply", session.SessionMiddleware(http.HandlerFunc(post.AddReply)))
+	http.Handle("/like", session.SessionMiddleware(http.HandlerFunc(like.LikeHandler)))
 
 	// Define routes that do not use session middleware
 	// These routes handle actions that do not require session management, like password reset or email confirmation.
@@ -42,7 +43,6 @@ func main() {
 	http.HandleFunc("/reset-password", handle.ResetPasswordHandler)
 	http.HandleFunc("/delete-account", handle.DeleteAccountHandler)
 
-	http.HandleFunc("/like", like.LikePostHandler)
 	http.HandleFunc("/filter", post.FilterPostHandler)
 
 	// Start the HTTP server

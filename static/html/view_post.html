@@ -62,24 +62,31 @@
             <p class="post-meta">Category: {{.Post.Category}}</p>
             <p class="post-meta">Posted by <b>{{.Post.Username}}</b></p>
             <p class="post-meta">Likes: {{.Post.Likes}} | Dislikes: {{.Post.Dislikes}}</p>
-            <div class="actions">
-                <!-- Like button -->
-                <form action="/like" method="post" style="display: inline;">
-                    <input type="hidden" name="post_id" value="{{.Post.ID}}">
-                    <input type="hidden" name="is_like" value="true">
-                    <button type="submit" title="Like">
-                        <i class="fa-solid fa-thumbs-up" style="color: green;"></i>
-                    </button>
-                </form>
-                <!-- Dislike button -->
-                <form action="/like" method="post" style="display: inline;">
-                    <input type="hidden" name="post_id" value="{{.Post.ID}}">
-                    <input type="hidden" name="is_like" value="false">
-                    <button type="submit" title="Dislike">
-                        <i class="fa-solid fa-thumbs-down" style="color: red;"></i>
-                    </button>
-                </form>
-            </div>
+            <p class="post-meta">PostID: {{.Post.ID}}</p>
+           <!-- Like and Dislike Buttons -->
+           {{if .Authenticated}}
+<div class="actions">
+<!-- Like button -->
+<form action="/like" method="post" style="display: inline;">
+    <input type="hidden" name="post_id" value="{{.Post.ID}}">
+    <input type="hidden" name="is_like" value="true">
+    <button type="submit" title="Like">
+        <i class="fa-solid fa-thumbs-up" style="color: green;"></i>
+    </button>
+</form>
+
+<!-- Dislike button -->
+<form action="/like" method="post" style="display: inline;">
+    <input type="hidden" name="post_id" value="{{.Post.ID}}">
+    <input type="hidden" name="is_like" value="false">
+    <button type="submit" title="Dislike">
+        <i class="fa-solid fa-thumbs-down" style="color: red;"></i>
+    </button>
+</form>
+
+</div>
+{{end}}
+
         </section>
     
         <!-- Replies Section -->

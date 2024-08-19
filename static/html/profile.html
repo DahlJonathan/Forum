@@ -1,41 +1,28 @@
-<!-- profile.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Character encoding for the document -->
     <meta charset="UTF-8">
-    <!-- Viewport settings for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Title of the page displayed in the browser tab -->
     <title>My Page</title>
-    <!-- Link to the external CSS stylesheet for this page -->
     <link rel="stylesheet" href="/static/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-</head>
 <body>
-    <!-- header ----------------------- -->
     <header>
-        <!-- Main heading of the page -->
         <h1>LITERARY LIONS FORUM</h1>
         <nav>
-            <!-- Navigation links -->
             <a class="headerlinks" href="/">Home</a>
             <a class="headerlinks" href="/post">Forum</a>
             <a class="headerlinks" href="/logout">Logout</a>
             <a class="headerlinks" href="/profile">My Page</a>
-            <!-- Display username with a message that the user is logged in -->
             <p>logged in as</p>
             <strong><h1><p>{{.Username}}</p></h1></strong>
         </nav>
     </header>
 
-    <!-- main ----------------------- -->
     <main>
         <div class="image-container">
-            <!-- User profile image -->
             <img class="bookimage" src="static/image/book.jpeg" alt="book">
-            <!-- Overlay text displaying user information -->
             <div class="overlay-text username">
                 <strong>Name:</strong> {{.Username}}
             </div>
@@ -43,29 +30,42 @@
                 <strong>Email:</strong> {{.Email}}
             </div>
             <div class="overlay-text likes">
-                <strong>Likes:</strong> {{.Likes}}
+                <strong>Likes:</strong> {{.NumLikes}}
             </div>
             <div class="overlay-text dislikes">
-                <strong>Dislikes:</strong> {{.Dislikes}}
+                <strong>Dislikes:</strong> {{.NumDislikes}}
             </div>
             <div class="overlay-text post">
-                <strong>Number of Posts: </strong> {{.NumPosts}}
+                <strong>Number of Posts:</strong> {{.NumPosts}}
             </div>
             <div class="overlay-text replies">
-                <strong>Number of Comments: </strong> {{.NumComments}}
+                <strong>Number of Comments:</strong> {{.NumComments}}
             </div>
-            <!-- Form to delete the user account with confirmation dialog -->
             <div class="overlay-text delete-account">
                 <form action="/delete-account" method="post" onsubmit="return confirm('Are you sure you want to delete your account?');">
                     <button type="submit" style="color: red;">Delete Account</button>
                 </form>
             </div>
         </div>
+
+        <!-- Section for user's posts -->
+        <div class="user-posts">
+            <h2>Your Posts</h2>
+            {{if .Posts}}
+                <ul>
+                    {{range .Posts}}
+                        <li>
+                            <a href="/post/view?id={{.PostID}}">{{.Title}}</a> - {{.CreatedAt}}
+                        </li>
+                    {{end}}
+                </ul>
+            {{else}}
+                <p>You have not made any posts yet.</p>
+            {{end}}
+        </div>
     </main>
 
-    <!-- footer ----------------------- -->
     <footer>
-        <!-- Footer content with copyright information -->
         <p>&copy; 2024 - Jonathan Dahl & Laura Levistö - KOOD/Sisu</p>
     </footer>
 </body>

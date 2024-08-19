@@ -1,4 +1,3 @@
-// session.go
 package session
 
 import (
@@ -8,7 +7,6 @@ import (
 )
 
 // sessionStore holds all active sessions in memory.
-// It uses a read-write mutex to ensure safe concurrent access.
 var sessionStore = struct {
 	sync.RWMutex
 	m map[string]SessionData
@@ -22,6 +20,8 @@ const (
 	Username = contextKey("Username")
 	// Authenticated is the key used to store and retrieve the authentication status from the context.
 	Authenticated = contextKey("Authenticated")
+	// UserID is the key used to store and retrieve the user ID from the context.
+	UserID = contextKey("UserID")
 )
 
 // SessionData holds information about a user's session.
@@ -32,24 +32,21 @@ type SessionData struct {
 }
 
 // GetSession retrieves session data based on the session ID.
-// Returns the session data and a boolean indicating if the session exists.
 func GetSession(sessionID string) (SessionData, bool) {
-	sessionStore.RLock() // Acquire a read lock
-	defer sessionStore.RUnlock() // Ensure the lock is released when the function exits
+	sessionStore.RLock()
+	defer sessionStore.RUnlock()
 	data, exists := sessionStore.m[sessionID]
 	return data, exists
 }
 
 // SetSession stores session data associated with a session ID.
-// It updates or creates a new session entry in the session store.
 func SetSession(sessionID string, data SessionData) {
-	sessionStore.Lock() // Acquire a write lock
-	defer sessionStore.Unlock() // Ensure the lock is released when the function exits
+	sessionStore.Lock()
+	defer sessionStore.Unlock()
 	sessionStore.m[sessionID] = data
 }
 
 // SessionMiddleware is an HTTP middleware that handles session management.
-// It retrieves session data from the session store and adds it to the request context.
 func SessionMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var authenticated bool
@@ -69,6 +66,7 @@ func SessionMiddleware(next http.Handler) http.Handler {
 		ctx := r.Context()
 		ctx = context.WithValue(ctx, Username, sessionData.Username)
 		ctx = context.WithValue(ctx, Authenticated, authenticated)
+		ctx = context.WithValue(ctx, UserID, sessionData.UserID) // Add UserID to context
 		r = r.WithContext(ctx)
 
 		// Pass control to the next handler in the chain

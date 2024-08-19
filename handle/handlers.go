@@ -261,8 +261,8 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 }
-///////////////SessionMiddleware END////////////////////
 
+///////////////SessionMiddleware END////////////////////
 
 // renderRegister renders the registration page with an error message
 func renderRegister(w http.ResponseWriter, errorMessage string) {

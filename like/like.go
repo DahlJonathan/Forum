@@ -1,91 +1,113 @@
-// like.go
 package like
 
 import (
+	"database/sql"
+	"lions/database"
+	"lions/session"
+	"log"
 	"net/http"
 	"strconv"
-	"github.com/gorilla/sessions"
-	"lions/database"
-	"log"
 )
 
-var (
-	// Replace with your own secret key for cookie encryption
-	key   = []byte("super-secret-key")
-	// Create a new session store with the provided secret key
-	store = sessions.NewCookieStore(key)
-)
-
-// PostLikeCounts holds the counts of likes and dislikes for a post
-type PostLikeCounts struct {
-	PostID    int
-	Likes     int
-	Dislikes  int
-}
-
-// LikePostHandler handles the liking and disliking of posts.
-// It processes POST requests to update the like/dislike status of a post for the current user.
-func LikePostHandler(w http.ResponseWriter, r *http.Request) {
-	// Handle only POST requests
-	if r.Method == http.MethodPost {
-		// Retrieve the session for the current request
-		session, _ := store.Get(r, "session")
-		// Get the user ID from the session values
-		userID, _ := session.Values["userID"].(int)
-
-		// Retrieve the post ID and like status from the form data
-		postID, _ := strconv.Atoi(r.FormValue("post_id"))
-		isLike := r.FormValue("is_like") == "true"
-
-		// Insert or update the like/dislike status in the database
-		_, err := database.DB.Exec(`
-			INSERT INTO PostLikes (UserID, PostID, CommentID, IsLike) 
-			VALUES (?, ?, NULL, ?) 
-			ON CONFLICT(UserID, PostID, CommentID) 
-			DO UPDATE SET IsLike = excluded.IsLike`, userID, postID, isLike)
-		if err != nil {
-		log.Printf("Error updating like/dislike: %v", err) // Log detailed error
-		http.Error(w, "Could not update like: "+err.Error(), http.StatusInternalServerError)
+// LikeHandler handles like/dislike requests for posts or comments
+func LikeHandler(w http.ResponseWriter, r *http.Request) {
+	// Check if the user is authenticated from the context
+	ctx := r.Context()
+	authenticated, ok := ctx.Value(session.Authenticated).(bool)
+	if !ok || !authenticated {
+		http.Error(w, "Unauthorized: User not logged in", http.StatusUnauthorized)
 		return
 	}
 
-		// Redirect the user to the posts page after updating
-		http.Redirect(w, r, "/posts", http.StatusSeeOther)
+	// Parse form data
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, "Failed to parse form data", http.StatusBadRequest)
+		return
+	}
+
+	// Extract form values
+	postIDStr := r.FormValue("post_id")
+	commentIDStr := r.FormValue("comment_id") // Optional for comments
+	isLike := r.FormValue("is_like") == "true"
+	userID, ok := ctx.Value(session.UserID).(int) // Get userID from session context
+
+	if !ok {
+		http.Error(w, "Invalid user ID", http.StatusBadRequest)
+		return
+	}
+
+	// No need to convert postID to integer if it's a UUID
+	postID := postIDStr // Use postIDStr directly if it's a UUID
+
+	var commentID *int = nil
+	if commentIDStr != "" {
+		commentIDVal, err := strconv.Atoi(commentIDStr)
+		if err != nil {
+			http.Error(w, "Invalid comment ID", http.StatusBadRequest)
+			return
+		}
+		commentID = &commentIDVal
+	}
+
+	// Call function to handle the like/dislike action
+	err = handleLikeDislike(userID, postID, commentID, isLike)
+	if err != nil {
+		http.Error(w, "Error processing like/dislike", http.StatusInternalServerError)
+		return
+	}
+	log.Printf("Post ID received: %s", postIDStr)
+	// Redirect back to the post view
+	http.Redirect(w, r, "/post/view?id="+postIDStr, http.StatusSeeOther)
+}
+
+// handleLikeDislike processes a like/dislike action for a post or comment
+func handleLikeDislike(userID int, postID string, commentID *int, isLike bool) error {
+	// Check if the user has already liked/disliked this post/comment
+	existingAction, err := getUserPostCommentAction(userID, postID, commentID)
+	if err != nil && err != sql.ErrNoRows {
+		return err
+	}
+
+	if existingAction == "" {
+		// If no previous action, insert a new like/dislike
+		err = insertLikeDislike(userID, postID, commentID, isLike)
+	} else if existingAction == "like" && !isLike || existingAction == "dislike" && isLike {
+		// If the user switches between like and dislike, update the record
+		err = updateLikeDislike(userID, postID, commentID, isLike)
+	} else {
+		// If the user is performing the same action again, do nothing
+		return nil
+	}
+
+	return err
+}
+
+// getUserPostCommentAction retrieves the user's previous action (like/dislike) on the post or comment
+func getUserPostCommentAction(userID int, postID string, commentID *int) (string, error) {
+	var action string
+	query := "SELECT IsLike FROM PostLikes WHERE UserID = ? AND PostID = ? AND CommentID IS ?"
+	err := database.DB.QueryRow(query, userID, postID, commentID).Scan(&action)
+	if err != nil {
+		return "", err
+	}
+
+	// Return "like" or "dislike" based on the IsLike value
+	if action == "1" {
+		return "like", nil
+	} else {
+		return "dislike", nil
 	}
 }
 
-// GetPostLikeCounts retrieves the total number of likes and dislikes for each post
-func GetPostLikeCounts() ([]PostLikeCounts, error) {
-	rows, err := database.DB.Query(`
-		SELECT 
-			PostID, 
-			SUM(CASE WHEN IsLike = TRUE THEN 1 ELSE 0 END) AS Likes, 
-			SUM(CASE WHEN IsLike = FALSE THEN 1 ELSE 0 END) AS Dislikes 
-		FROM 
-			PostLikes 
-		GROUP BY 
-			PostID
-	`)
-	if err != nil {
-		log.Printf("Error executing query: %v", err)
-		return nil, err
-	}
-	defer rows.Close()
+// insertLikeDislike inserts a new like or dislike into the PostLikes table
+func insertLikeDislike(userID int, postID string, commentID *int, isLike bool) error {
+	_, err := database.DB.Exec("INSERT INTO PostLikes (UserID, PostID, CommentID, IsLike) VALUES (?, ?, ?, ?)", userID, postID, commentID, isLike)
+	return err
+}
 
-	var results []PostLikeCounts
-	for rows.Next() {
-		var pc PostLikeCounts
-		if err := rows.Scan(&pc.PostID, &pc.Likes, &pc.Dislikes); err != nil {
-			log.Printf("Error scanning row: %v", err)
-			return nil, err
-		}
-		results = append(results, pc)
-	}
-
-	if err := rows.Err(); err != nil {
-		log.Printf("Error iterating rows: %v", err)
-		return nil, err
-	}
-
-	return results, nil
+// updateLikeDislike updates an existing like or dislike in the PostLikes table
+func updateLikeDislike(userID int, postID string, commentID *int, isLike bool) error {
+	_, err := database.DB.Exec("UPDATE PostLikes SET IsLike = ? WHERE UserID = ? AND PostID = ? AND CommentID IS ?", isLike, userID, postID, commentID)
+	return err
 }

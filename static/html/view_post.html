@@ -98,9 +98,10 @@
                     <!-- Loop through each reply and display it -->
                     {{range .Replies}}
                     <li class="reply">
-                        <p><b>{{.Username}}:</b></p>
+                        <p>Posted by <b>{{.Username}}:</b></p>
                         <p class="reply-content">{{.Content}}</p>
                     </li>
+                    
                     {{else}}
                         <!-- Message shown if there are no replies -->
                         <p>No replies yet.</p>
@@ -110,7 +111,9 @@
                 <!-- Message shown if there are no replies -->
                 <p>No replies yet.</p>
             {{end}}
+            
         </section>
+        
     
         <!-- Reply Form -->
         {{if .Authenticated}}

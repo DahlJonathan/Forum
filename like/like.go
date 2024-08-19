@@ -89,7 +89,6 @@ func handleLikeDislike(userID int, postID string, commentID *int, isLike bool) e
 		return nil
 	}
 	log.Printf("Existing action: %s", existingAction)
-	log.Printf("Performing action: %s", isLike)
 
 	return err
 }

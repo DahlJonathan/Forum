@@ -197,17 +197,7 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Fetch user data from the database
-	var userInfo struct {
-		Username    string
-		Email       string
-		NumPosts    int
-		NumComments int
-		NumLikes    int
-		NumDislikes int
-	}
-
-	// Get user ID based on username
+	// Fetch user ID based on username
 	var userID int
 	err = database.DB.QueryRow(`SELECT UserID FROM User WHERE Username = ?`, sessionData.Username).Scan(&userID)
 	if err != nil {
@@ -217,7 +207,16 @@ func ProfileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch basic user info
-	err = database.DB.QueryRow(`SELECT Username, Email FROM User WHERE Username = ?`, sessionData.Username).
+	var userInfo struct {
+		Username    string
+		Email       string
+		NumPosts    int
+		NumComments int
+		NumLikes    int
+		NumDislikes int
+	}
+
+	err = database.DB.QueryRow(`SELECT Username, Email FROM User WHERE UserID = ?`, userID).
 		Scan(&userInfo.Username, &userInfo.Email)
 	if err != nil {
 		log.Println("Database error:", err)

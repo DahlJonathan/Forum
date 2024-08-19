@@ -56,12 +56,11 @@ func LikeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error processing like/dislike", http.StatusInternalServerError)
 		return
 	}
-	log.Printf("Post ID received: %s", postIDStr)
+
 	// Redirect back to the post view
 	http.Redirect(w, r, "/post/view?id="+postIDStr, http.StatusSeeOther)
 }
 
-// handleLikeDislike processes a like/dislike action for a post or comment
 func handleLikeDislike(userID int, postID string, commentID *int, isLike bool) error {
 	// Check if the user has already liked/disliked this post/comment
 	existingAction, err := getUserPostCommentAction(userID, postID, commentID)
@@ -69,23 +68,34 @@ func handleLikeDislike(userID int, postID string, commentID *int, isLike bool) e
 		return err
 	}
 
-	if existingAction == "" {
+	// Determine the current action
+	currentAction := "none"
+	if existingAction != "" {
+		if existingAction == "like" {
+			currentAction = "like"
+		} else if existingAction == "dislike" {
+			currentAction = "dislike"
+		}
+	}
+
+	if currentAction == "none" {
 		// If no previous action, insert a new like/dislike
 		err = insertLikeDislike(userID, postID, commentID, isLike)
-	} else if existingAction == "like" && !isLike || existingAction == "dislike" && isLike {
-		// If the user switches between like and dislike, update the record
+	} else if (currentAction == "like" && !isLike) || (currentAction == "dislike" && isLike) {
+		// If switching between like and dislike, update the record
 		err = updateLikeDislike(userID, postID, commentID, isLike)
 	} else {
-		// If the user is performing the same action again, do nothing
+		// If performing the same action again, do nothing
 		return nil
 	}
+	log.Printf("Existing action: %s", existingAction)
+	log.Printf("Performing action: %s", isLike)
 
 	return err
 }
 
-// getUserPostCommentAction retrieves the user's previous action (like/dislike) on the post or comment
 func getUserPostCommentAction(userID int, postID string, commentID *int) (string, error) {
-	var action string
+	var action bool
 	query := "SELECT IsLike FROM PostLikes WHERE UserID = ? AND PostID = ? AND CommentID IS ?"
 	err := database.DB.QueryRow(query, userID, postID, commentID).Scan(&action)
 	if err != nil {
@@ -93,20 +103,18 @@ func getUserPostCommentAction(userID int, postID string, commentID *int) (string
 	}
 
 	// Return "like" or "dislike" based on the IsLike value
-	if action == "1" {
+	if action {
 		return "like", nil
 	} else {
 		return "dislike", nil
 	}
 }
 
-// insertLikeDislike inserts a new like or dislike into the PostLikes table
 func insertLikeDislike(userID int, postID string, commentID *int, isLike bool) error {
 	_, err := database.DB.Exec("INSERT INTO PostLikes (UserID, PostID, CommentID, IsLike) VALUES (?, ?, ?, ?)", userID, postID, commentID, isLike)
 	return err
 }
 
-// updateLikeDislike updates an existing like or dislike in the PostLikes table
 func updateLikeDislike(userID int, postID string, commentID *int, isLike bool) error {
 	_, err := database.DB.Exec("UPDATE PostLikes SET IsLike = ? WHERE UserID = ? AND PostID = ? AND CommentID IS ?", isLike, userID, postID, commentID)
 	return err

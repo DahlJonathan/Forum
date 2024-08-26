@@ -1,42 +1,69 @@
 <!-- register.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Character encoding for the document -->
     <meta charset="UTF-8">
+    <!-- Viewport settings for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modal Popup Example</title>
+    <!-- Title of the page displayed in the browser tab -->
+    <title>Register</title>
+    <!-- Link to the external CSS stylesheet for this page -->
     <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
+</head>
+
 <body>
     <!-- header ----------------------- -->
     <header>
-        <h1>Literary Lions Forum</h1>
+        <!-- Main heading of the page -->
+        <h1>WELCOME TO LITERARY LIONS FORUM</h1>
         <nav>
-            <a href="/">Home</a>
-            <a href="/post">Forum</a>
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
+            <!-- Navigation links -->
+            <a class="headerlinks" href="/">Home</a>
+            <a class="headerlinks" href="/post">Forum</a>
+            <a class="headerlinks" href="/login">Login</a>
+            <a class="headerlinks" href="/register">Register</a>
         </nav>
     </header>
 
     <!-- Register ----------------------- -->
-    <div class="container">
+    <div class="login">
+        <!-- Heading for the registration form -->
         <h1>Register</h1>
-        <form action="/register" method="post">
+        <!-- Form for user registration -->
+        <form action="/register" method="post" class="login-form">
+            <!-- Username input field -->
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required><br>
+            <!-- Email input field -->
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br>
+            <div class="password">
+                <!-- Password input field -->
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+            </div>
+            <!-- Submit button for the form -->
             <button type="submit">Register</button>
         </form>
     </div>
+
+    <!-- Display error message if there is one -->
+    {{if .ErrorMessage}}
+    <div class="error-message" style="color: red;">
+        <p>{{.ErrorMessage}}</p>
+    </div>
+    {{end}}
+
     <!-- footer ----------------------- -->
     <footer>
-        <p>&copy; 2024 Literary Lions Forum</p>
+        <!-- Footer content with copyright information -->
+        <p>&copy; 2024 - Jonathan Dahl & Laura Levistö - KOOD/Sisu</p>
     </footer>
 
-
 </body>
+
 </html>

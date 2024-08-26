@@ -2,52 +2,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Character encoding for the document -->
     <meta charset="UTF-8">
+    <!-- Viewport settings for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title of the webpage -->
     <title>Literary Lions Forum</title>
+    <!-- Link to the external CSS stylesheet -->
     <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
 </head>
 <body>
     <!-- header ----------------------- -->
     <header>
-        <h1>Welcome to Literary Lions Forum</h1>
+        <!-- Conditional rendering based on authentication status -->
+        {{if .Authenticated}}
+            <!-- Displayed if user is authenticated -->
+            <h1>LITERARY LIONS FORUM</h1>
+        {{else}}
+            <!-- Displayed if user is not authenticated -->
+            <h1>WELCOME TO LITERARY LIONS FORUM</h1>
+        {{end}}
+        <!-- Navigation links -->
         <nav>
-            <a href="/">Home</a>
-            <a href="/post">Forum</a>
+            <!-- Link to the home page -->
+            <a class="headerlinks" href="/">Home</a>
+            <!-- Link to the forum page -->
+            <a class="headerlinks" href="/post">Forum</a>
+            <!-- Conditional rendering of navigation links based on authentication -->
             {{if .Authenticated}}
-                <a href="/logout">Logout</a>
-                <a href="/profile">My Page</a>
-                <p>Welcome, {{.Username}}!</p>
+                <!-- Link to logout if user is authenticated -->
+                <a class="headerlinks" href="/logout">Logout</a>
+                <!-- Link to profile page if user is authenticated -->
+                <a class="headerlinks" href="/profile">My Page</a>
+                <br>
+                <!-- Display username if user is authenticated -->
+                <p class="loggedin">logged in as</p>
+                <strong><h1><p  class="usernamelogged">{{.Username}}</p></h1></strong>
             {{else}}
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
+                <!-- Link to login page if user is not authenticated -->
+                <a class="headerlinks" href="/login">Login</a>
+                <!-- Link to register page if user is not authenticated -->
+                <a class="headerlinks" href="/register">Register</a>
             {{end}}
         </nav>
     </header>
 
     <!-- main ----------------------- -->
     <main>
-
-            <img class="bookimage" src="static/image/book.jpg" alt="book">
-
+        <!-- Display a book image with a class for styling -->
+        <img class="bookimage" src="static/image/book.jpeg" alt="book">
     </main>
 
-        <!-- footer ----------------------- -->
-        <footer>
-            <p>&copy; 2024 Literary Lions Forum</p>
-        </footer>
-
-
-    <!-- modal popup ÄLÄ POISTA VIELÄ----------------------- 
-    <a href="#modal" class="modal-trigger">Open Modal</a>
-
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <h2>Modal Header</h2>
-            <p>This is the modal content.</p>
-            <a href="#" class="close">Close</a>
-        </div>
-    </div>-->
-
+    <!-- footer ----------------------- -->
+    <footer>
+        <!-- Footer content with copyright information -->
+        <p>&copy; 2024 - Jonathan Dahl & Laura Levistö - KOOD/Sisu</p>
+    </footer>
+    
 </body>
 </html>

@@ -1,134 +1,41 @@
+<!-- profile.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Character encoding for the document -->
     <meta charset="UTF-8">
+    <!-- Viewport settings for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Literary Lions Forum</title>
+    <!-- Title of the page displayed in the browser tab -->
+    <title>My Page</title>
+    <!-- Link to the external CSS stylesheet for this page -->
     <link rel="stylesheet" href="/static/css/styles.css">
-    <style>
-        /* Ensure the image is properly positioned and sized */
-        .image-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        .image-container img {
-            width: 100%; /* Adjust as necessary */
-            height: auto;
-        }
-
-        /* Position text over the image */
-        .overlay-text {
-            position: absolute;
-            color: white; /* or any other contrasting color */
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 16px; /* Adjust font size as needed */
-        }
-
-        /* Positioning of each text block */
-        .username {
-            top: 20px;
-            left: 20px;
-        }
-
-        .email {
-            top: 60px;
-            left: 20px;
-        }
-
-        .likes {
-            top: 100px;
-            left: 20px;
-        }
-
-        .dislikes {
-            top: 140px;
-            left: 20px;
-        }
-
-        .posts {
-            top: 180px;
-            left: 20px;
-        }
-
-        .replies {
-            top: 220px;
-            left: 20px;
-        }
-
-        .password {
-            bottom: 100px;
-            left: 20px;
-        }
-
-        .delete-account {
-            bottom: 20px;
-            left: 20px;
-        }
-
-        /* Center text for better visibility */
-        .overlay-text form {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .overlay-text form button {
-            margin-top: 10px;
-        }
-
-        /* Checkbox hidden but still functional */
-        .show-password-checkbox {
-            display: none;
-        }
-
-        .password-wrapper {
-            position: relative;
-        }
-
-        .show-password-label {
-            display: block;
-            margin-top: 5px;
-            color: white; /* or any other contrasting color */
-        }
-
-        .show-password-checkbox:checked + .password-input {
-            visibility: visible;
-        }
-
-        .password-input {
-            position: absolute;
-            left: 0;
-            top: 0;
-            visibility: hidden;
-            background-color: white; /* Background color to make input visible */
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
 </head>
 <body>
     <!-- header ----------------------- -->
     <header>
-        <h1>Welcome to Literary Lions Forum</h1>
+        <!-- Main heading of the page -->
+        <h1>LITERARY LIONS FORUM</h1>
         <nav>
-            <a href="/">Home</a>
-            <a href="/post">Forum</a>
-            <a href="/logout">Logout</a>            <a href="/profile">My Page</a>
-            <p>Welcome, {{.Username}}!</p>
-
+            <!-- Navigation links -->
+            <a class="headerlinks" href="/">Home</a>
+            <a class="headerlinks" href="/post">Forum</a>
+            <a class="headerlinks" href="/logout">Logout</a>
+            <a class="headerlinks" href="/profile">My Page</a>
+            <!-- Display username with a message that the user is logged in -->
+            <p class="loggedin">logged in as</p>
+            <strong><p class="usernamelogged">{{.Username}}</p></strong>
         </nav>
     </header>
 
     <!-- main ----------------------- -->
     <main>
-        <h2>My Page</h2>
-        
         <div class="image-container">
-            <img src="static/image/book.jpg" alt="book">
+            <!-- User profile image -->
+            <img class="bookimage" src="static/image/book.jpeg" alt="book">
+            <!-- Overlay text displaying user information -->
             <div class="overlay-text username">
                 <strong>Name:</strong> {{.Username}}
             </div>
@@ -141,36 +48,25 @@
             <div class="overlay-text dislikes">
                 <strong>Dislikes:</strong> {{.Dislikes}}
             </div>
-            <div class="overlay-text posts">
-                <strong>Number of Posts:</strong> {{.NumPosts}}
+            <div class="overlay-text post">
+                <strong>Number of Posts: </strong> {{.NumPosts}}
             </div>
             <div class="overlay-text replies">
-                <strong>Number of Comments::</strong> {{.NumComments}}
+                <strong>Number of Comments: </strong> {{.NumComments}}
             </div>
-            <div class="overlay-text password">
-                <form action="/update-password" method="post">
-                    <div class="password-wrapper">
-                        <input type="password" id="password" name="password" placeholder="New Password" required class="password-input">
-                        <label for="show-password" class="show-password-label">
-                            <input type="checkbox" id="show-password" class="show-password-checkbox">
-                            Show Password
-                        </label>
-                    </div>
-                    <button type="submit">Show Password</button>
-                </form>
-            </div>
+            <!-- Form to delete the user account with confirmation dialog -->
             <div class="overlay-text delete-account">
                 <form action="/delete-account" method="post" onsubmit="return confirm('Are you sure you want to delete your account?');">
                     <button type="submit" style="color: red;">Delete Account</button>
                 </form>
             </div>
         </div>
-
     </main>
 
     <!-- footer ----------------------- -->
     <footer>
-        <p>&copy; 2024 Literary Lions Forum</p>
+        <!-- Footer content with copyright information -->
+        <p>&copy; 2024 - Jonathan Dahl & Laura Levistö - KOOD/Sisu</p>
     </footer>
 </body>
 </html>

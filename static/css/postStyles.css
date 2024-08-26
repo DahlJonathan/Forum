@@ -1,0 +1,441 @@
+ /* postStyles */
+
+/* ----------------------------Global Styles---------------------------- */
+/* Reset margin and padding for all major elements to ensure consistent layout */
+body, h1, h2, h3, p, form, input, textarea, select, button {
+    height: 100%; /* Ensures elements take full height */
+    margin: 0;    /* Removes default margin */
+    padding: 0;   /* Removes default padding */
+    box-sizing: border-box; /* Includes padding and border in element's total width and height */
+}
+
+body {
+    font-family: Arial, sans-serif; /* Sets a clean, readable font */
+    line-height: 1.6; /* Increases line height for better readability */
+    background-color: #fbfafc; /* Light background color for the page */
+
+}
+
+a {
+    text-decoration: none; /* Removes underline from links */
+    color: inherit; /* Inherits color from parent element */
+}
+
+/* ----------------------------header---------------------------- */
+/* Styles for the header section */
+header {
+    background: linear-gradient(135deg, #9775cc, #d0b2ff); /* Light purple gradient */
+    color: #000000; /* Black text color */
+    padding: 1rem 0; /* Vertical padding */
+    text-align: center; /* Center align text */
+    transition: background-color 0.6s ease;
+    font-family: 'Poppins', Arial, sans-serif; /* Set Poppins as the primary font */
+    line-height: 1.6; /* Increase line height for better readability */
+
+}
+
+.loggedin {
+    font-size: small;
+    margin-top: 10px;
+}
+
+.usernamelogged {
+    font-size: 1rem;
+}
+
+/* Style for navigation bar */
+nav {
+    margin-top: 10px; /* Space between header and navigation */
+}
+
+nav a {
+    color: #fff; /* White text color for navigation links */
+    margin: 0 1rem; /* Horizontal margin between links */
+    font-weight: 500; /* Medium font weight */
+    transition: color 0.3s ease; /* Smooth color transition on hover */
+}
+
+nav a:hover {
+    color: #e6e6e6; /* Light gray color on hover */
+}
+
+main {
+    max-width: 1000px; /* Limits the maximum width of the main content */
+    width: 100%; /* Full width of the container */
+    margin: 2rem auto; /* Centered with vertical margin */
+    padding: 0 20px; /* Horizontal padding for spacing */
+    display: flex; /* Flexbox for layout */
+    flex-direction: column; /* Stacks children vertically */
+    align-items: center; /* Centers children horizontally */
+}
+
+/* Styles for link elements in the login and header sections */
+.loginlink:hover {
+    color: #e4befa; /* Light purple on hover */
+    text-decoration: none; /* Removes underline on hover */
+}
+
+.headerlinks:hover {
+    color: #e4befa; /* Light purple on hover */
+    text-decoration: none; /* Removes underline on hover */
+}
+
+h2 {
+    font-size: 1.75rem; /* Size of the heading text */
+    margin-bottom: 1rem; /* Space below the heading */
+    color: #333; /* Dark gray text color */
+    border-bottom: 3px solid #bda0d0; /* Light purple bottom border for emphasis */
+    padding-bottom: 0.5rem; /* Padding below the heading text */
+}
+
+/* ----------------------------Styles for various sections including posts and comments---------------------------- */
+.create-post, .filter-posts, .posts, .post-details, .comments, .add-comment {
+    background-color: #fff; /* White background for readability */
+    padding: 1.5rem; /* Padding inside sections */
+    margin-bottom: 2rem; /* Space below sections */
+    border-radius: 8px; /* Rounded corners for a soft appearance */
+    box-shadow: 0 4px 8px rgba(0.1, 0.1, 0.1, 0.4); /* Subtle shadow for depth */
+    width: 100%; /* Full width of the container */
+    max-width: 800px; /* Limits maximum width of sections */
+}
+
+
+.create-post h2, .filter-posts h2 {
+    font-size: 1.2rem; /* Slightly smaller font size for section headings */
+    margin-bottom: 0.5rem; /* Reduced margin below section headings */
+}
+
+.create-post title {
+    margin-bottom: 50px;
+}
+
+
+
+
+
+/* Adjust styles for input fields */
+.create-post input[type="text"], 
+.create-post textarea, 
+.create-post select {
+    width: 100%; /* Makes inputs and textareas full width of their container */
+    padding: 0.75rem; /* Adds padding inside form elements */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1rem; /* Standard font size */
+    line-height: 1.5; /* Increases line height for readability */
+    margin-bottom: 3px; /* Adds space below each input field */
+    max-width: 100%;
+}
+
+/* Additional styles for textarea */
+.create-post textarea {
+    height: 150px; /* Sets a fixed height for the textarea */
+}
+
+
+/* ---------------------------- Styles for dropdowns ---------------------------- */
+
+/* Add space between dropdowns in filter-posts section */
+.filter-posts select {
+    width: 15%; /* Width for sorting dropdowns */
+    font-size: 16px; /* Font size for category dropdown */
+    padding: 3px; /* Padding inside dropdowns */
+    margin-bottom: 1px; /* Space below each dropdown */
+}
+
+/* Specifically style the sorting dropdowns to distinguish them */
+#time-filter, #likes-filter {
+    width: 15%; /* Width for sorting dropdowns */
+    font-size: 16px; /* Font size for category dropdown */
+    padding: 3px; /* Padding inside dropdowns */
+    margin-bottom: 1rem; /* Space below each dropdown */
+}
+
+/* Style for other dropdowns */
+#category-filter {
+    width: 15%; /* Width for sorting dropdowns */
+    font-size: 16px; /* Font size for category dropdown */
+    padding: 3px; /* Padding inside dropdowns */
+    margin-bottom: 1rem; /* Space below each dropdown */
+}
+
+/* Adjusting form layout if needed */
+.filter-posts form {
+    display: block;
+    flex-direction: column; /* Stack form elements vertically */
+    gap: 1px; /* Space between form elements */
+}
+
+
+
+/* Style for form elements */
+form {
+    
+    gap: 1rem; /* Space between grid items */
+}
+
+label {
+    font-weight: 600; /* Bold labels for emphasis */
+    margin-bottom: 0.5rem; /* Space below labels */
+}
+
+input[type="text"], textarea, select {
+    padding: 0.75rem; /* Padding inside form elements */
+    border: 1px solid #ccc; /* Light gray border for form elements */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1rem; /* Standard font size */
+    line-height: 1.5; /* Increased line height for readability */
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 0.75rem; /* Padding inside buttons */
+    border: none; /* Removes default border */
+    background-color: #000; /* Black background color */
+    color: #fff; /* White text color */
+    font-size: 1rem; /* Standard font size */
+    font-weight: bold; /* Bold text for emphasis */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+button:hover {
+    background-color: #333; /* Darker black on hover */
+}
+
+/* ----------------------------Styles for the posts table---------------------------- */
+.posts-table {
+    width: 800px; /* Fixed width for the table */
+    border-spacing: 0; /* Removes space between table cells */
+    border: 1px solid #ddd; /* Light gray border around the table */
+    border-radius: 8px; /* Rounded corners for the table */
+    overflow: hidden; /* Hides overflow content */
+}
+
+.table-head {
+    background-color: #f8f9fa; /* Light gray background for table headers */
+    font-weight: bold; /* Bold text for headers */
+    padding: 0.75rem; /* Padding inside table headers */
+    display: grid; /* Grid layout for table headers */
+    grid-template-columns: 50px 3fr 1fr 1fr; /* Defines column widths */
+    gap: 20px; /* Space between columns */
+    text-align: left; /* Center text horizontally */
+}
+
+.table-row {
+    padding: 0.75rem; /* Padding inside table rows */
+    display: grid; /* Grid layout for table rows */
+    grid-template-columns: 50px 3fr 1fr 1fr; /* Defines column widths */
+    gap: 10px; /* Space between columns */
+    border-top: 1px solid #ddd; /* Light gray border above rows */
+    align-items: center; /* Centers content vertically */
+}
+
+/* Username in the Reply */
+.table-row .titlefont {
+    font-size: 1.5rem;
+}
+
+
+.table-row:hover {
+    background-color: #f1f1f1; /* Light gray background on hover */
+}
+
+/* ----------------------------Status icon styles---------------------------- */
+.status-icon {
+    font-size: 1.5rem; /* Larger font size for icons */
+    color: #ff6600; /* Orange color for status icons */
+}
+
+/* ----------------------------Pagination styles---------------------------- */
+.pagination {
+    text-align: center; /* Centers pagination links */
+    margin-top: 20px; /* Space above pagination */
+}
+
+.pagination a {
+    margin: 0 5px; /* Space between pagination links */
+    padding: 8px 12px; /* Padding inside pagination links */
+    border: 1px solid #ccc; /* Light gray border */
+    color: #333; /* Dark gray text color */
+    font-weight: 600; /* Bold text for pagination links */
+    text-decoration: none; /* Removes underline from links */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for background and text color */
+
+}
+
+.pagination a:hover {
+    background-color: #bda0d0; /* Light purple background on hover */
+    color: #fff; /* White text color on hover */
+}
+
+/* ----------------------------Comment styles---------------------------- */
+.comment {
+    padding: 1rem; /* Padding inside comment box */
+    border: 1px solid #eee; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #fafafa; /* Very light gray background */
+    margin-bottom: 10px; /* Space below each comment */
+}
+/* Replies Section */
+.replies {
+   /* margin-top: 1rem;  Space above replies section */
+    padding-left: 1rem; /* Padding on the left */
+    max-width: 800px; /* Aligns with the post width */
+}
+
+/* Reply Section - Where the reply appears after hitting Enter */
+.reply {
+    background-color: #fff; /* White background for replies */
+    padding: 1.5rem; /* Padding inside the reply box */
+    margin-bottom: 1rem; /* Space below each reply */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    width: 100%; /* Full width within its container */
+    max-width: 800px; /* Aligns with the post width */
+    display: flex; /* Flexbox layout */
+    flex-direction: column; /* Stacks children vertically */
+}
+
+/* Username in the Reply */
+.reply .username {
+    font-weight: bold; /* Bold text for the username */
+    margin-bottom: 0.5rem; /* Space below the username */
+    color: #333; /* Darker text color */
+}
+
+
+
+/* ----------------------------Reply Form---------------------------- */
+.reply-form {
+    background-color: #fff; /* White background for the reply form */
+    padding: 1.5rem; /* Padding inside the reply form */
+    margin-top: 2rem; /* Space above the reply form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    width: 100%; /* Full width within its container */
+    max-width: 800px; /* Aligns with the post width */
+}
+
+/* Reply Form Textarea */
+.reply-form textarea {
+    width: 100%; /* Full width of the textarea */
+    height: 100px; /* Fixed height for the textarea */
+    padding: 0.75rem; /* Padding inside the textarea */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1rem; /* Standard font size */
+    line-height: 1.4; /* Increased line height for readability */
+    margin-bottom: 1rem; /* Space below the textarea */
+    resize: vertical; /* Allows vertical resizing only */
+}
+
+/* Reply Form Button */
+.reply-form button {
+    padding: 0.75rem 1.5rem; /* Padding inside the button */
+    background-color: #000; /* Black background color */
+    color: #fff; /* White text color */
+    border: none; /* Removes default border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 1rem; /* Standard font size */
+    font-weight: bold; /* Bold text for emphasis */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.reply-form button:hover {
+    background-color: #333; /* Darker black on hover */
+}
+
+/* ----------------------------footer---------------------------- */
+/* Styles for the footer section */
+footer {
+    margin-top: 50px; /* Space above the footer */
+    background: #333; /* Dark gray background for the footer */
+    color: #fff; /* White text color */
+    text-align: center; /* Centers footer text */
+    padding: 1rem; /* Padding inside the footer */
+}
+footer p {
+    margin: 0; /* Removes margin from paragraph inside footer */
+}
+
+/* ----------------------------Responsive Styles---------------------------- */
+/* Adjust table layout for smaller screens */
+@media (max-width: 768px) {
+    .table-head, .table-row {
+        grid-template-columns: 1fr; /* Single column layout for small screens */
+    }
+}
+
+/* Further adjustments for very small screens */
+@media (max-width: 600px) {
+    .create-post, .filter-posts {
+        padding: 0.5rem; /* Further reduce padding on smaller screens */
+        max-width: 100%; /* Ensure sections take full width */
+    }
+}
+
+
+
+
+/* ----------------------------- Modal ----------------------------- */
+
+/* Style for the modal overlay */
+.modal {
+    display: none; /* Hide modal by default */
+    position: fixed; /* Fixed positioning to cover entire screen */
+    top: 0; /* Align at top */
+    left: 0; /* Align at left */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background: rgba(128, 0, 128, 0.5); /* Purple background with 50% transparency */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    z-index: 1000; /* Ensure modal is above other content */
+}
+
+.modal:target {
+    display: flex; /* Show modal when targeted by anchor link */
+}
+
+
+/* Style for modal content box */
+.modal-content {
+    background: #fff; /* White background for content */
+    padding: 2rem; /* Padding inside modal */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Center align text */
+}
+
+/* Style for modal close button */
+.modal .close {
+    display: inline-block; /* Inline-block display */
+    margin-top: 1rem; /* Space above button */
+    padding: 0.5rem 1rem; /* Padding inside button */
+    background: #333; /* Dark background */
+    color: #fff; /* White text color */
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.modal .close:hover {
+    background: #555; /* Darker background on hover */
+}
+
+/* Style for modal trigger button */
+.modal-trigger {
+    display: inline-block; /* Inline-block display */
+    margin: 1rem; /* Margin around button */
+    padding: 0.5rem 1rem; /* Padding inside button */
+    background: #333; /* Dark background */
+    color: #fff; /* White text color */
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.modal-trigger:hover {
+    background: #555; /* Darker background on hover */
+}

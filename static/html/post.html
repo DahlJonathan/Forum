@@ -1,63 +1,181 @@
+<!-- post.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Character encoding for the document -->
     <meta charset="UTF-8">
+    <!-- Viewport settings for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Description of the page for SEO purposes -->
+    <meta name="description" content="A forum for literary discussions.">
+    <!-- Keywords for SEO -->
+    <meta name="keywords" content="forum, posts, comments, discussions, literary">
+    <!-- Title of the page displayed in the browser tab -->
     <title>Literary Lions Forum</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- Link to the external CSS stylesheet for this page -->
+    <link rel="stylesheet" href="/static/css/postStyles.css" >
+    <!-- Link to Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
+
+
 <body>
+    <!-- header ----------------------- -->
     <header>
-        <h1>Literary Lions Forum</h1>
+        <!-- Conditional heading based on authentication status -->
+        {{if .Authenticated}}
+        <h1>LITERARY LIONS FORUM</h1>
+        {{else}}
+        <h1>WELCOME TO LITERARY LIONS FORUM</h1>
+        {{end}}
         <nav>
-            <a href="/">Home</a>
-            <a href="/posts">Forum</a>
+            <!-- Navigation links -->
+            <a class="headerlinks" href="/">Home</a>
+            <a class="headerlinks" href="/post">Forum</a>
             {{if .Authenticated}}
-                <a href="/logout">Logout</a>
-                <a href="/profile">My Page</a>
-                <p>Welcome, {{.Username}}!</p>
+                <a class="headerlinks" href="/logout">Logout</a>
+                <a class="headerlinks" href="/profile">My Page</a>
+                <p class="loggedin">logged in as</p>
+                <strong><p class="usernamelogged">{{.Username}}</p></strong>
             {{else}}
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
+                <a class="headerlinks" href="/login">Login</a>
+                <a class="headerlinks" href="/register">Register</a>
             {{end}}
         </nav>
     </header>
 
+    <!-- main content area ----------------------- -->
+    
     <main>
-        <section class="new-post">
-            <h2>Create a New Post</h2>
-            {{if .Authenticated}}
-            <form action="/post/create" method="post">
-                <label for="title">Title:</label>
-                <input type="text" id="title" name="title" required>
-                <label for="content">Content:</label>
-                <textarea id="content" name="content" required></textarea>
-                <label for="category">Category:</label>
-                <input type="text" id="category" name="category" required>
-                <button type="submit">Post</button>
-            </form>
-            {{else}}
-            <p>You need to <a href="/login">login</a> to create a post.</p>
-            {{end}}
-        </section>
+        {{if .Authenticated}}
+        <div class="create-filter-container">
+            <!-- Create New Post Section -->
+            
+           <!-- Create New Post Section -->
+<section class="create-post">
+    <h2>Create a New Post</h2>
+    <!-- Form to create a new post -->
+    <form action="/post/create" method="post">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required aria-required="true">
+        
+        <label for="content">Content:</label>
+        <textarea id="content" name="content" required aria-required="true"></textarea>
+        
+        <label for="category">Category:</label>
+        <select id="category" name="category" required aria-required="true">
+            <option value="general">General</option>
+            <option value="genres">Genres</option>
+        </select>
+        
+        <button type="submit">Post</button>
+    </form>
+</section>
 
-        <section class="posts">
-            <h2>Recent Posts</h2>
-            {{range .Posts}}
-            <article>
-                <h3><a href="/post/view?id={{.ID}}">{{.Title}}</a></h3>
-                <p>{{.Content}}</p>
-                <p>Category: {{.Category}}</p>
-                <p>Posted by {{.Username}}</p>
-            </article>
             {{else}}
-            <p>No posts yet. Be the first to post!</p>
+            <!-- Message for unauthenticated users -->
+            <p>You need to <a class="loginlink" href="/login">login</a> to post.</p>
             {{end}}
-        </section>
+        
+            <!-- Filter Posts Section -->
+            <section class="filter-posts">
+                 <h2>Filter Posts</h2>
+                <!-- Form to filter posts based on category and sorting options -->
+                <form action="/filter" method="get">
+                {{if .Authenticated}}
+                <!-- Sorting dropdowns should be before other filters -->
+                <label for="time-filter">Sort by Time:</label>
+                <select id="time-filter" name="sort">
+                    <option value="asc">Oldest First</option>
+                    <option value="desc">Newest First</option>
+                </select>
+                <label for="likes-filter">Sort by Likes:</label>
+                <select id="likes-filter" name="likes">
+                    <option value="asc">Least Likes</option>
+                    <option value="desc">Most Likes</option>
+                </select>
+                {{end}}
+                <!-- Other filters -->
+                <label for="category-filter">Category:</label>
+                <select id="category-filter" name="category">
+                    <option value="all">All</option>
+                    <option value="recent">Recent</option>
+                    <option value="general">General</option>
+                    <option value="genres">Genres</option>
+            </select>
+            <button type="submit">Filter</button>
+            </form>
+            </section>
+
+        </div>
+
+<!-- Posts Section -->
+<section class="posts">
+    <h2>Posts</h2><br>
+    <div class="posts-table">
+        <!-- Table header for posts -->
+        <div class="table-head">
+            <div class="status"></div>
+            <div class="subjects">Title</div>
+            <div class="replies">Replies</div>
+            <div class="actions">Likes</div>
+        </div>
+        <!-- Loop through each post and display it -->
+        {{range .Posts}}
+        <div class="table-row">
+            <div class="status-icon">
+                <!-- Icon for the post status -->
+                <i class="fa-solid fa-book-open-reader" style="color: #B197FC;"></i>
+            </div>
+            <div class="subjects">
+                <!-- Post title with a link to view the full post -->
+                <a class="titlefont" href="/post/view?id={{.ID}}">{{.Title}}</a>
+                <br>
+                <span>Started by <b>{{.Username}}</b></span>
+            </div>
+            <div class="replies">
+                <!-- Display number of replies -->
+                {{.RepliesCount}} replies
+            </div>
+            <div class="actions">
+                <!-- Display number of likes and dislikes -->
+                Likes: {{.Likes}}<br>
+                Dislikes: {{.Dislikes}}
+            </div>
+        </div>
+        {{else}}
+        <!-- Message when no posts are available -->
+        <p>No posts available.</p>
+        {{end}}
+    </div>
+</section>
+
+
+        <!-- Pagination Section -->
+        <div class="pagination">
+            {{if gt .Pagination.TotalPages 1}}
+                <!-- Display pagination controls if there is more than one page -->
+                <span>Page {{.Pagination.CurrentPage}} of {{.Pagination.TotalPages}}</span>
+                {{if gt .Pagination.CurrentPage 1}}
+                    <!-- Link to the previous page -->
+                    <a href="/post?page={{sub .Pagination.CurrentPage 1}}">Previous</a>
+                {{end}}
+                {{if lt .Pagination.CurrentPage .Pagination.TotalPages}}
+                    <!-- Link to the next page -->
+                    <a href="/post?page={{add .Pagination.CurrentPage 1}}">Next</a>
+                {{end}}
+            {{end}}
+        </div>
+
     </main>
 
+    <!-- footer ----------------------- -->
     <footer>
-        <p>&copy; 2024 Literary Lions Forum</p>
+        <!-- Footer content with copyright information -->
+        <p>&copy; 2024 - Jonathan Dahl & Laura Levistö - KOOD/Sisu</p>
     </footer>
 </body>
+
 </html>

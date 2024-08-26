@@ -11,9 +11,20 @@ Tietoturva:
 The forum detects duplicate email or username during registration. OK!
 The forum displays a warning message for invalid login attempts. OK!
 The forum detects incorrect email or password during login. OK!
+Passwords are secured and encrypted using bcrypt or other strong algorithms. XXXEXTRAXXXX OK!
+The registration process is user-friendly and secure. XXXEXTRAXXXX  OK! 
+UUIDs are used to manage sessions. XXXEXTRAXXXX
 
+Postaus:
+Empty posts and comments are not allowed.
 
+server:
+The server uses correct HTTP methods (GET, POST, PUT...etc).
+Error messages are informative and user-friendly. XXXEXTRAXXXX
 
+pari test sähköpostiviestiä
+lionsreviewer1@gmail.com salasana: Reviewer1-
+lionsreviewer2@gmail.com salasana: Reviewer2test
 
 
 
@@ -33,9 +44,8 @@ Tietoturva:
 
 Multiple browser sessions function correctly.
 Sessions are implemented for user persistence.
-The registration process is user-friendly and secure. XXXEXTRAXXXX  OK! (mitä tarkoitaa secure?)
-UUIDs are used to manage sessions. XXXEXTRAXXXX
-Passwords are secured and encrypted using bcrypt or other strong algorithms. XXXEXTRAXXXX OK!
+
+
 
 
 
@@ -50,8 +60,6 @@ Passwords are secured and encrypted using bcrypt or other strong algorithms. XXX
 *************************************************************************
 TEKEMÄTTÄ
 *************************************************************************
-pari test sähköpostiviestiä
-
 
 ***********************************
 Rekisteröidyt käyttäjät:
@@ -67,67 +75,68 @@ Only registered users can like or dislike posts and comments
 ***********************************
 Postaus:
 ***********************************
-    Empty posts and comments are not allowed.
-    The number of likes and dislikes for comments is visible to all users.
-    he number of likes and dislikes is displayed and updated correctly.
-    Posts cannot be liked and disliked simultaneously.
-    It is easy to respond to posts and comments. XXXEXTRAXXXX
+
+The number of likes and dislikes for comments is visible to all users.
+The number of likes and dislikes is displayed and updated correctly.
+Posts cannot be liked and disliked simultaneously.
+It is easy to respond to posts and comments. XXXEXTRAXXXX
 
 
 ***********************************
 Docker:
 ***********************************
-    A Dockerfile is present in the project.
-    The project has no unused Docker objects.
-    A Docker image can be built successfully using the Dockerfile.
-    The container runs successfully using the created image.
+A Dockerfile is present in the project.
+The project has no unused Docker objects.
+A Docker image can be built successfully using the Dockerfile.
+The container runs successfully using the created image.
 
 
 ***********************************
 Server:
 ***********************************
-    The server uses correct HTTP methods (GET, POST, PUT...etc).
-    Only allowed packages are used
-    The server uses appropriate HTTP response codes, 2XX, 4XX.
-    All pages function correctly (no unhandled 404 errors).
-    The project handles HTTP status 400 and 500 errors gracefully.
-    The server behaves as expected (no crashes).
-    The interface handles 5XX HTTP response codes gracefully.
-    The interface is clear, well set out and navigable. XXXEXTRAXXXX
-    Error messages are informative and user-friendly. XXXEXTRAXXXX
+
+Only allowed packages are used
+The server uses appropriate HTTP response codes, 2XX, 4XX.
+All pages function correctly (no unhandled 404 errors).
+The project handles HTTP status 400 and 500 errors gracefully.
+The server behaves as expected (no crashes).
+The interface handles 5XX HTTP response codes gracefully.
+The interface is clear, well set out and navigable. XXXEXTRAXXXX
+
 
 
 ***********************************
 SQL:
 ***********************************
-    The database is designed with an Entity Relationship Diagram ERD
-        with clear modeling of relationships between entities.
-    Posts are stored in the database.
-    The code uses at least one CREATE query.
-    Comments are stored in the database.
-    User registration data is stored in the database.
-    The code uses at least one SELECT query.
-    The code uses at least one INSERT query.
-    SQL queries are effective and efficient. XXXEXTRAXXXX
+The database is designed with an Entity Relationship Diagram ERD
+    with clear modeling of relationships between entities.
+Posts are stored in the database.
+The code uses at least one CREATE query.
+Comments are stored in the database.
+User registration data is stored in the database.
+The code uses at least one SELECT query.
+The code uses at least one INSERT query.
+SQL queries are effective and efficient. XXXEXTRAXXXX
 
 
 ***********************************
 Filtteröinti:
 ***********************************
-    Posts can be filtered by category.
-    Posts can be associated with categories.
-    Categories are effective in organising discussions.XXXEXTRAXXXX
-    Content has intuitive filtering. XXXEXTRAXXXX
-    Search functionality is implemented, with advanced search options. XXXEXTRAXXXX
+Posts can be filtered by category.
+Posts can be associated with categories.
+Categories are effective in organising discussions.XXXEXTRAXXXX
+Content has intuitive filtering. XXXEXTRAXXXX
+Search functionality is implemented, with advanced search options. XXXEXTRAXXXX
 
 
 ***********************************
 Oma sivu:
 ***********************************
-    Users have access to profile pages. XXXEXTRAXXXX
+Users have access to profile pages. XXXEXTRAXXXX
 
 
 
-    The project has other bonus features that are not listed in the bonus part.XXXEXTRAXXXX
+
+The project has other bonus features that are not listed in the bonus part.XXXEXTRAXXXX
 
 

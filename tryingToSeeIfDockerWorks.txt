@@ -1,0 +1,180 @@
+^Cstudent@student-ThinkPad-T490s:~/literary-lionsdocker run --rm -it literary-lions /bin/bashsh
+
+root@cf3def802891:/app# ls -l /app
+
+total 12788
+-rw-rw-r-- 1 root root      505 Aug  6 07:47 Dockerfile
+-rw-rw-r-- 1 root root     4414 Aug  6 07:47 README.md
+-rw-rw-r-- 1 root root     2736 Aug  6 08:34 REVIEW.md
+-rw-rw-r-- 1 root root     4192 Aug  8 05:54 TODO.txt
+drwxrwxr-x 2 root root     4096 Aug  9 05:42 database
+drwxrwxr-x 2 root root     4096 Aug  9 05:42 debug
+drwxrwxr-x 2 root root     4096 Aug  8 05:54 email
+-rw-rw-r-- 1 root root     5144 Aug  7 07:12 git_ohjeita.md
+-rw-rw-r-- 1 root root      295 Aug  7 08:30 go.mod
+-rw-rw-r-- 1 root root     1183 Aug  7 08:30 go.sum
+drwxrwxr-x 2 root root     4096 Aug  9 05:42 handle
+drwxrwxr-x 2 root root     4096 Aug  6 07:47 like
+-rw-rw-r-- 1 root root       73 Aug  8 05:54 lions_projekti.txt
+-rwxr-xr-x 1 root root 12940224 Aug  9 06:27 main
+-rw-rw-r-- 1 root root     2707 Aug  9 06:24 main.go
+drwxrwxr-x 2 root root     4096 Aug  6 07:47 password
+drwxrwxr-x 2 root root     4096 Aug  8 05:54 post
+drwxrwxr-x 5 root root     4096 Aug  6 07:47 static
+-rw-rw-r-- 1 root root    69632 Aug  9 05:43 user.db
+
+root@cf3def802891:/app# ./main
+2024/08/12 07:51:45 Database schema and indexes created or already exist.
+2024/08/12 07:51:45 Server starting on port 8080...
+
+student@student-ThinkPad-T490s:~/literary-lions$ docker run -d --name literary-lions literary-lions
+828395805d89a24105dd16320556bb7637cf16f1462da03873dc84d060f9ebce
+
+student@student-ThinkPad-T490s:~/literary-lions$ docker logs literary-lions
+2024/08/12 07:52:00 Database schema and indexes created or already exist.
+2024/08/12 07:52:00 Server starting on port 8080...
+
+root@cf3def802891:/app# exit
+exit
+
+student@student-ThinkPad-T490s:~/literary-lions$ sudo docker build -t literary-lions .
+sudo: The "no new privileges" flag is set, which prevents sudo from running as root.
+sudo: If sudo is running in a container, you may need to adjust the container configuration to disable the flag.
+
+student@student-ThinkPad-T490s:~/literary-lions$ groups
+student adm cdrom sudo dip plugdev lpadmin sambashare docker
+
+student@student-ThinkPad-T490s:~/literary-lions$ docker build -t literary-lions .
+docker ps
+[+] Building 40.4s (11/11) FINISHED                           docker:default
+ => [internal] load build definition from Dockerfile                    0.0s
+ => => transferring dockerfile: 544B                                    0.0s
+ => [internal] load .dockerignore                                       0.0s
+ => => transferring context: 2B                                         0.0s
+ => [internal] load metadata for docker.io/library/golang:1.18          1.2s
+ => [internal] load build context                                       0.1s
+ => => transferring context: 1.21MB                                     0.1s
+ => [1/6] FROM docker.io/library/golang:1.18@sha256:50c889275d26f816b5  0.0s
+ => CACHED [2/6] WORKDIR /app                                           0.0s
+ => CACHED [3/6] COPY go.mod go.sum ./                                  0.0s
+ => CACHED [4/6] RUN go mod download                                    0.0s
+ => [5/6] COPY . .                                                      0.1s
+ => [6/6] RUN go build -o main .                                       38.9s
+ => exporting to image                                                  0.1s
+ => => exporting layers                                                 0.1s
+ => => writing image sha256:702a3aae4a9468b58f40ca8fdd5f8aaff5fc2647f3  0.0s
+ => => naming to docker.io/library/literary-lions                       0.0s
+CONTAINER ID   IMAGE          COMMAND    CREATED         STATUS         PORTS     NAMES
+828395805d89   fe79d29b3eb2   "./main"   6 minutes ago   Up 6 minutes             literary-lions
+
+student@student-ThinkPad-T490s:~/literary-lions$ sudo docker ps -a
+sudo: The "no new privileges" flag is set, which prevents sudo from running as root.
+sudo: If sudo is running in a container, you may need to adjust the container configuration to disable the flag.
+
+
+RESTART
+
+
+student@student-ThinkPad-T490s:~/literary-lions$ sudo docker build -t literary-lions .
+[sudo] password for student:         
+[+] Building 40.6s (11/11) FINISHED                                                                                  docker:default
+ => [internal] load .dockerignore                                                                                              0.0s
+ => => transferring context: 2B                                                                                                0.0s
+ => [internal] load build definition from Dockerfile                                                                           0.0s
+ => => transferring dockerfile: 544B                                                                                           0.0s
+ => [internal] load metadata for docker.io/library/golang:1.18                                                                 1.5s
+ => [internal] load build context                                                                                              0.1s
+ => => transferring context: 900.34kB                                                                                          0.1s
+ => [1/6] FROM docker.io/library/golang:1.18@sha256:50c889275d26f816b5314fc99f55425fa76b18fcaf16af255f5d57f09e1f48da           0.0s
+ => CACHED [2/6] WORKDIR /app                                                                                                  0.0s
+ => CACHED [3/6] COPY go.mod go.sum ./                                                                                         0.0s
+ => CACHED [4/6] RUN go mod download                                                                                           0.0s
+ => [5/6] COPY . .                                                                                                             0.1s
+ => [6/6] RUN go build -o main .                                                                                              38.8s
+ => exporting to image                                                                                                         0.2s
+ => => exporting layers                                                                                                        0.2s
+ => => writing image sha256:f4a808f53a0822efb7065a144731ea59d198d04225392549f38c5d5561c0659b                                   0.0s
+ => => naming to docker.io/library/literary-lions  
+
+
+student@student-ThinkPad-T490s:~/literary-lions$ sudo docker run -p 8080:8080 literary-lions
+docker: Error response from daemon: driver failed programming external connectivity on endpoint pensive_euclid (ea5339268a9f64830ad77d815af858c095398a538734302dd204b3830cf5a2a8): Bind for 0.0.0.0:8080 failed: port is already allocated.
+ERRO[0000] error waiting for container:
+                 
+student@student-ThinkPad-T490s:~/literary-lions$ docker ps
+CONTAINER ID   IMAGE          COMMAND    CREATED         STATUS         PORTS                                       NAMES
+e4ee027c51aa   702a3aae4a94   "./main"   4 minutes ago   Up 3 minutes   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   literary-lions
+
+student@student-ThinkPad-T490s:~/literary-lions$ docker ps
+CONTAINER ID   IMAGE          COMMAND    CREATED          STATUS          PORTS                                       NAMES
+e4ee027c51aa   702a3aae4a94   "./main"   36 minutes ago   Up 36 minutes   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   literary-lions
+
+student@student-ThinkPad-T490s:~/literary-lions$ sudo docker logs e4ee027c51aa
+2024/08/12 08:07:31 Database schema and indexes created or already exist.
+2024/08/12 08:07:31 Server starting on port 8080...
+2024/08/12 08:12:01 Session not found for ID: 17e75c95-5b4b-428a-ab24-022f53d3fa8a
+2024/08/12 08:12:01 Session get: 17e75c95-5b4b-428a-ab24-022f53d3fa8a -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:12:01 Session not found for ID: 17e75c95-5b4b-428a-ab24-022f53d3fa8a
+2024/08/12 08:12:01 Session get: 17e75c95-5b4b-428a-ab24-022f53d3fa8a -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:12:03 Session not found for ID: fbeeadd9-935f-4109-83ba-029d9d734df8
+2024/08/12 08:12:03 Session get: fbeeadd9-935f-4109-83ba-029d9d734df8 -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:12:03 Session not found for ID: fbeeadd9-935f-4109-83ba-029d9d734df8
+2024/08/12 08:12:03 Session get: fbeeadd9-935f-4109-83ba-029d9d734df8 -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:01 Session not found for ID: 17e75c95-5b4b-428a-ab24-022f53d3fa8a
+2024/08/12 08:41:01 Session get: 17e75c95-5b4b-428a-ab24-022f53d3fa8a -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:01 Session not found for ID: 17e75c95-5b4b-428a-ab24-022f53d3fa8a
+2024/08/12 08:41:01 Session get: 17e75c95-5b4b-428a-ab24-022f53d3fa8a -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:02 Session not found for ID: fbeeadd9-935f-4109-83ba-029d9d734df8
+2024/08/12 08:41:02 Session get: fbeeadd9-935f-4109-83ba-029d9d734df8 -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:02 Session not found for ID: fbeeadd9-935f-4109-83ba-029d9d734df8
+2024/08/12 08:41:02 Session get: fbeeadd9-935f-4109-83ba-029d9d734df8 -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:04 Session not found for ID: fbeeadd9-935f-4109-83ba-029d9d734df8
+2024/08/12 08:41:04 Session get: fbeeadd9-935f-4109-83ba-029d9d734df8 -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:04 Session not found for ID: fbeeadd9-935f-4109-83ba-029d9d734df8
+2024/08/12 08:41:04 Session get: fbeeadd9-935f-4109-83ba-029d9d734df8 -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:10 Session not found for ID: 17e75c95-5b4b-428a-ab24-022f53d3fa8a
+2024/08/12 08:41:10 Session get: 17e75c95-5b4b-428a-ab24-022f53d3fa8a -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:10 Session not found for ID: 17e75c95-5b4b-428a-ab24-022f53d3fa8a
+2024/08/12 08:41:10 Session get: 17e75c95-5b4b-428a-ab24-022f53d3fa8a -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:10 Session not found for ID: 17e75c95-5b4b-428a-ab24-022f53d3fa8a
+2024/08/12 08:41:10 Session get: 17e75c95-5b4b-428a-ab24-022f53d3fa8a -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:16 Session not found for ID: fbeeadd9-935f-4109-83ba-029d9d734df8
+2024/08/12 08:41:16 Session get: fbeeadd9-935f-4109-83ba-029d9d734df8 -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:17 Session not found for ID: fbeeadd9-935f-4109-83ba-029d9d734df8
+2024/08/12 08:41:17 Session get: fbeeadd9-935f-4109-83ba-029d9d734df8 -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:30 Session not found for ID: fbeeadd9-935f-4109-83ba-029d9d734df8
+2024/08/12 08:41:30 Session get: fbeeadd9-935f-4109-83ba-029d9d734df8 -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:30 Login attempt with email: lauralionsforum@gmail.com
+2024/08/12 08:41:30 Fetched hashed password for email: lauralionsforum@gmail.com
+2024/08/12 08:41:30 Session set: 123fdf13-413c-49f3-8bbf-e83700b4b18c -> {Username:Laura AL Authenticated:true}
+2024/08/12 08:41:30 Session get: 123fdf13-413c-49f3-8bbf-e83700b4b18c -> {Username:Laura AL Authenticated:true}, exists: true
+2024/08/12 08:41:32 Session not found for ID: 17e75c95-5b4b-428a-ab24-022f53d3fa8a
+2024/08/12 08:41:32 Session get: 17e75c95-5b4b-428a-ab24-022f53d3fa8a -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:32 Session not found for ID: 17e75c95-5b4b-428a-ab24-022f53d3fa8a
+2024/08/12 08:41:32 Session get: 17e75c95-5b4b-428a-ab24-022f53d3fa8a -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:45 Session not found for ID: 17e75c95-5b4b-428a-ab24-022f53d3fa8a
+2024/08/12 08:41:45 Session get: 17e75c95-5b4b-428a-ab24-022f53d3fa8a -> {Username: Authenticated:false}, exists: false
+2024/08/12 08:41:45 Login attempt with email: lauralionssecond@gmail.com
+2024/08/12 08:41:45 Fetched hashed password for email: lauralionssecond@gmail.com
+2024/08/12 08:41:45 Session set: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}
+2024/08/12 08:41:45 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+2024/08/12 08:41:45 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+2024/08/12 08:41:48 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+2024/08/12 08:41:48 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+2024/08/12 08:41:48 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+2024/08/12 08:41:49 Session get: 123fdf13-413c-49f3-8bbf-e83700b4b18c -> {Username:Laura AL Authenticated:true}, exists: true
+2024/08/12 08:41:49 Session get: 123fdf13-413c-49f3-8bbf-e83700b4b18c -> {Username:Laura AL Authenticated:true}, exists: true
+2024/08/12 08:41:49 Session get: 123fdf13-413c-49f3-8bbf-e83700b4b18c -> {Username:Laura AL Authenticated:true}, exists: true
+2024/08/12 08:42:01 Session get: 123fdf13-413c-49f3-8bbf-e83700b4b18c -> {Username:Laura AL Authenticated:true}, exists: true
+2024/08/12 08:42:01 Session get: 123fdf13-413c-49f3-8bbf-e83700b4b18c -> {Username:Laura AL Authenticated:true}, exists: true
+2024/08/12 08:42:03 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+2024/08/12 08:42:03 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+2024/08/12 08:43:03 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+2024/08/12 08:43:03 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+2024/08/12 08:43:09 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+2024/08/12 08:43:09 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+2024/08/12 08:43:09 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+2024/08/12 08:43:09 Session get: 22690941-e517-44c0-abba-13d777e9a800 -> {Username:Laura second Authenticated:true}, exists: true
+
+student@student-ThinkPad-T490s:~/literary-lions$ docker stop e4ee027c51aa
+e4ee027c51aa

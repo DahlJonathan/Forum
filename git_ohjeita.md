@@ -251,9 +251,7 @@ Be very careful with this, as it can overwrite changes in the remote branch.
 
     git push --force origin branch1:main
 
-## Example Workflow
-
-#### Here is an example of how you might pull changes from main into branch1 and then push changes from branch1 to main:
+# Pull changes from main into branch1 and then push changes from branch1 to main:
 
 Checkout and Update branch1:
 
@@ -272,3 +270,18 @@ Git will indicate if there are any merge conflicts that need to be resolved. Aft
 Push Changes from branch1 to main:
 
     git push origin branch1:main
+
+
+# Pull the latest changes from the main branch into your current branch
+
+Ensure You Are on Your Branch:
+
+    git checkout your-branch-name
+
+Fetch the Latest Changes:
+
+    git fetch origin
+
+Merge main into Your Branch:
+
+    git merge origin/main    

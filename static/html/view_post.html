@@ -1,47 +1,156 @@
+<!-- view_post.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Character encoding for the document -->
     <meta charset="UTF-8">
+    <!-- Viewport settings for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{.Post.Title}}</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- Meta description for search engines -->
+    <meta name="description" content="View post details and comments.">
+    <!-- Meta keywords for search engines -->
+    <meta name="keywords" content="forum, post, comments, replies">
+    <!-- Title of the page, dynamically set to the post title -->
+    <title>{{.Post.Title}} - Literary Lions Forum</title>
+    <!-- Link to the external CSS stylesheet for post styles -->
+    <link rel="stylesheet" href="/static/css/postStyles.css">
+    <!-- Link to Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
+</head>
+
 <body>
+    <!-- Header ----------------------- -->
     <header>
-        <h1>{{.Post.Title}}</h1>
-    </header>
-    <main>
-        <article>
-            <p>{{.Post.Content}}</p>
-            <p>Posted by {{.Post.Username}} in {{.Post.Category}}</p>
-        </article>
-
-        <section class="replies">
-            <h2>Replies</h2>
-            {{range .Replies}}
-            <div class="reply">
-                <p>{{.Content}}</p>
-            </div>
-            {{else}}
-            <p>No replies yet. Be the first to reply!</p>
-            {{end}}
-        </section>
-
-        <section class="reply-form">
+        <!-- Conditional heading based on user authentication status -->
+        {{if .Authenticated}}
+        <h1>LITERARY LIONS FORUM</h1>
+        {{else}}
+        <h1>WELCOME TO LITERARY LIONS FORUM</h1>
+        {{end}}
+        <nav>
+            <!-- Navigation links -->
+            <a class="headerlinks" href="/">Home</a>
+            <a class="headerlinks" href="/post">Forum</a>
+            <!-- Conditional navigation links based on user authentication status -->
             {{if .Authenticated}}
-            <form action="/post/reply" method="post">
-                <input type="hidden" name="post_id" value="{{.Post.ID}}">
-                <label for="content">Your Reply:</label>
-                <textarea id="content" name="content" required></textarea>
-                <button type="submit">Reply</button>
-            </form>
+                <a class="headerlinks" href="/logout">Logout</a>
+                <a class="headerlinks" href="/profile">My Page</a>
+                <!-- Display a message indicating the user is logged in -->
+                <p class="loggedin">logged in as</p>
+                <strong><h1><p class="usernamelogged">{{.Username}}</p></h1></strong>
             {{else}}
-            <p>You need to <a href="/login">login</a> to reply.</p>
+                <a class="headerlinks" href="/login">Login</a>
+                <a class="headerlinks" href="/register">Register</a>
+            {{end}}
+        </nav>
+    </header>
+
+    <!-- Main content ----------------------- -->
+    <main>
+        <!-- Post Details Section -->
+        <section class="post-details">
+            <!-- Display the title of the post -->
+            <h2>{{.Post.Title}}</h2>
+            <!-- Display the content of the post -->
+            <p class="post-content">{{.Post.Content}}</p><br><br>
+            <!-- Link to trigger the modal popup -->
+            <a href="#modal" class="modal-trigger">Open Pic</a>
+            <h2></h2>
+            <!-- Display metadata about the post -->
+            <p class="post-meta">Category: {{.Post.Category}}</p>
+            <p class="post-meta">Posted by <b>{{.Post.Username}}</b></p>
+            <p class="post-meta">Likes: {{.Post.Likes}} | Dislikes: {{.Post.Dislikes}}</p>
+            <div class="actions">
+                <!-- Like button -->
+                <form action="/like" method="post" style="display: inline;">
+                    <input type="hidden" name="post_id" value="{{.Post.ID}}">
+                    <input type="hidden" name="is_like" value="true">
+                    <button type="submit" title="Like">
+                        <i class="fa-solid fa-thumbs-up" style="color: green;"></i>
+                    </button>
+                </form>
+                <!-- Dislike button -->
+                <form action="/like" method="post" style="display: inline;">
+                    <input type="hidden" name="post_id" value="{{.Post.ID}}">
+                    <input type="hidden" name="is_like" value="false">
+                    <button type="submit" title="Dislike">
+                        <i class="fa-solid fa-thumbs-down" style="color: red;"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+    
+        <!-- Replies Section -->
+        <section class="replies">
+            <h3>Replies</h3>
+            <!-- Conditional display of replies -->
+            {{if .Replies}}
+                <ul class="reply-list">
+                    <!-- Loop through each reply and display it -->
+                    {{range .Replies}}
+                    <li class="reply">
+                        <p><b>{{.Username}}:</b></p>
+                        <p class="reply-content">{{.Content}}</p>
+                    </li>
+                    {{else}}
+                        <!-- Message shown if there are no replies -->
+                        <p>No replies yet.</p>
+                    {{end}}
+                </ul>
+            {{else}}
+                <!-- Message shown if there are no replies -->
+                <p>No replies yet.</p>
             {{end}}
         </section>
+    
+        <!-- Reply Form -->
+        {{if .Authenticated}}
+        <section class="reply-form">
+            <h3>Add a Reply:</h3>
+            <!-- Form for adding a reply to the post -->
+            <form action="/post/reply" method="POST">
+                <!-- Hidden field to pass the post ID -->
+                <input type="hidden" name="postID" value="{{.Post.ID}}">
+                <!-- Textarea for the reply content -->
+               <!-- <label for="content">Reply:</label>-->
+                <textarea id="content" name="content" required aria-required="true"></textarea>
+                <!-- Submit button for the reply form -->
+                <button type="submit">Submit Reply</button>
+            </form>
+        </section>
+        {{else}}
+        <!-- Message shown if the user is not authenticated -->
+        <p>You need to <a class="loginlink" href="/login">login</a> to reply.</p>
+        {{end}}
     </main>
+    
+
+    <!-- Footer ----------------------- -->
     <footer>
-        <p>&copy; 2024 Literary Lions Forum</p>
+        <!-- Footer content with copyright information -->
+        <p>&copy; 2024 - Jonathan Dahl & Laura Levistö - KOOD/Sisu</p>
     </footer>
+
+
+
+    <!-- modal popup --> 
+
+    <!-- Modal container -->
+    <div id="modal" class="modal">
+        <!-- Content of the modal -->
+        <div class="modal-content">
+            <!-- Header of the modal -->
+            <h2>My pic</h2>
+            <!-- Body of the modal -->
+            <p>This is the content.</p>
+            <!-- Link to close the modal -->
+            <a href="#" class="close">Close</a>
+        </div>
+    </div>
+
+
+
 </body>
 </html>

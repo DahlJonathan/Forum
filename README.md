@@ -1,6 +1,6 @@
-# Literary Lions Forum
+# Forum
 
-A web forum for Literary Lions. Users can post & comment, view posts & comments, like or dislike posts & comments, and filter posts.
+Users can post & comment, view posts & comments, like or dislike posts & comments, and filter posts.
 
 
 ## Before starting the program
